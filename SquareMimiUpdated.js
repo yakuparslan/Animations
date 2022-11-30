@@ -7,7 +7,7 @@ let stop = true;
 let y = 0 ;
 var sW = [];
 var sC = [];
-let size= 50  ;
+let size= 150  ;
 let factor = 2;
 let margin = size /factor ;
 let posX,posY;
@@ -21,7 +21,7 @@ let sync = false;
 function setup() {
   rectMode(CENTER);
   createCanvas(width, height);
-  background('#66806A');
+  background('#2B3A55');
 
   noi_width = floor((width*factor-size)/(size*factor+size));
   noi_height = floor((height*factor-size)/(size*factor+size));
@@ -35,7 +35,7 @@ function setup() {
   for (let y= 0 ; y<noi_height;y++) {
     for ( let x = 0 ; x <noi_width; x ++) {
       var bool = Math.random() < 0.5;
-      offset = random(-0.01,0.01);  
+      offset = random(-0.10,0.10);  
       //scale(sC[x*noi+y]);
      
      //
@@ -47,7 +47,7 @@ function setup() {
      var trans_y = posY+(margin+size)*y;
    
       push();
-      myDraw[index] = new MimiDraw(index,x,y,size,random(0,360),random(0.1,3.9),'#FFC286',bool,trans_x,trans_y,offset,offset,sync);
+      myDraw[index] = new MimiDraw(index,x,y,size,random(0,360),random(0.1,3.9),'#FFC286',bool,trans_x,trans_y,offset,offset,sync,[index]);
       translate(trans_x,trans_y);
       myDraw[index].display();
       pop();
@@ -60,7 +60,7 @@ function setup() {
 }
 
 function draw() {
-  background('#66806A');
+  background('#2B3A55');
   for(let x = 0 ;x<index;x++) {
  
   push();
@@ -84,7 +84,7 @@ function draw() {
 
 
 class MimiDraw {
-  constructor(index,arr_x,arr_y,size,rotation,weight,color,side,trans_x,trans_y,offset,angle,sync,synced_index){
+  constructor(index,arr_x,arr_y,size,rotation,weight,color,side,trans_x,trans_y,offset,angle,sync,synced_index=[]){
     this.index = index;
     this.arr_x=arr_x;
     this.arr_y=arr_y;
@@ -177,9 +177,8 @@ class MimiDraw {
     compare() {
    
      let compare = ComparableMonsters(this.index);
-     
+    // if(myDraw[this.index].sync==false){
      for(let x = 0 ; x<compare.length;x++) {
-      if(myDraw[compare[x]].sync==false){
       let compared = Math.abs(floor(myDraw[compare[x]].rotation));
       let curRotation = Math.abs(floor(this.rotation));
       //console.log(curRotation+' '+compared);
@@ -188,6 +187,7 @@ class MimiDraw {
        console.log(curRotation+' '+compared);
          console.log('equal');
          MonstersMatched(myDraw[this.index],myDraw[compare[x]]);
+         break;
        }
       }
     }
@@ -209,25 +209,37 @@ class MimiDraw {
     }
 
 
-}
+//}
 
 function MonstersMatched(first,second){
-
+ // if(first.sync==false) {
   first.sync=true;
   second.sync=true;
+ 
+  first.synced_index=[...new Set(first.synced_index.concat(second.synced_index))];
+  second.synced_index=[...new Set(second.synced_index.concat(first.synced_index))];
+  let avgWeight=0;
+  let avgOffset=0;
+  let avgAngle=0;
 
-  var avgWeight = (first.strokeWeight+second.strokeWeight)/2;
-  var avgOffset = (first.offset+second.offset)/2
-  var avgAngle = (first.angle+second.angle)/2
-  first.strokeWeight=avgWeight;
-  second.strokeWeight=avgWeight;
-  first.offset=avgOffset;
-  second.offset=avgOffset;
-  first.angle=avgAngle;
-  second.angle=avgAngle;
+  for(let i =0 ;i<second.synced_index.length;i++ ){
+     avgWeight += myDraw[second.synced_index[i]].weight;
+     avgOffset += myDraw[second.synced_index[i]].offset;
+     avgAngle  += myDraw[second.synced_index[i]].angle;
+
+  }
+  let random_color = getRandomColor();
+  for(let i =0 ;i<second.synced_index.length;i++ ){
+    myDraw[second.synced_index[i]].weight=avgWeight/second.synced_index.length;
+    myDraw[second.synced_index[i]].offset=avgOffset/second.synced_index.length;
+    myDraw[second.synced_index[i]].angle=avgAngle/second.synced_index.length;
+    myDraw[second.synced_index[i]].color= random_color;
+
+ }
+}
  
 
-}
+//}
 
 function ComparableMonsters (index){
   var arr   = [];
@@ -358,3 +370,14 @@ function drawSquareMimi(x,y,size){
 
  endShape();
 }
+
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+  
