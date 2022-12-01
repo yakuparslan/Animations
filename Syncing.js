@@ -7,7 +7,7 @@ let stop = true;
 let y = 0 ;
 var sW = [];
 var sC = [];
-let size= 50  ;
+let size= 100  ;
 let factor = 2;
 let margin = size /factor ;
 let posX,posY;
@@ -47,7 +47,7 @@ function setup() {
      var trans_y = posY+(margin+size)*y;
    
       push();
-      myDraw[index] = new MimiDraw(index,x,y,size,random(0,360),random(0.1,3.9),'#FFC286',bool,trans_x,trans_y,offset,offset,sync,[index]);
+      myDraw[index] = new MimiDraw(index,x,y,size,random(0,360),random(0.1,3.9),random_rgba(),bool,trans_x,trans_y,offset,offset,sync,[index]);
       translate(trans_x,trans_y);
       myDraw[index].display();
       pop();
@@ -84,7 +84,7 @@ function draw() {
 
 
 class MimiDraw {
-  constructor(index,arr_x,arr_y,size,rotation,weight,color,side,trans_x,trans_y,offset,angle,sync,synced_index=[]){
+  constructor(index,arr_x,arr_y,size,rotation,weight,color=[],side,trans_x,trans_y,offset,angle,sync,synced_index=[]){
     this.index = index;
     this.arr_x=arr_x;
     this.arr_y=arr_y;
@@ -106,9 +106,9 @@ class MimiDraw {
     var x = 0-this.size/2;
     var y = 0-this.size/2;
    
-   
+    let clr = 'rgb(' + this.color[0] + ',' + this.color[1] + ',' + this.color[2]  + ')';
     strokeWeight(this.weight);
-    stroke (this.color);
+    stroke (color(clr));
     rotate(radians(this.rotation));
 
 
@@ -212,34 +212,51 @@ class MimiDraw {
 //}
 
 function MonstersMatched(first,second){
- // if(first.sync==false) {
+ if(CompareArray(first.synced_index,second.synced_index)==false) {
   first.sync=true;
   second.sync=true;
- 
-  first.synced_index=[...new Set(first.synced_index.concat(second.synced_index))];
-  second.synced_index=[...new Set(second.synced_index.concat(first.synced_index))];
+
+  console.log(CompareArray(first.synced_index,second.synced_index));
+  
+  all=[...new Set(first.synced_index.concat(second.synced_index))];
+
+  for (let x=0;x<all.length;x++){
+    myDraw[all[x]].synced_index=all;
+  }
+
+
+
+  //first.synced_index=[...new Set(first.synced_index.concat(second.synced_index))];
+  //second.synced_index=[...new Set(second.synced_index.concat(first.synced_index))];
   let avgWeight=0;
   let avgOffset=0;
   let avgAngle=0;
+  let avgColorR=0;
+  let avgColorG=0;
+  let avgColorB=0;
 
-  for(let i =0 ;i<second.synced_index.length;i++ ){
-     avgWeight += myDraw[second.synced_index[i]].weight;
-     avgOffset += myDraw[second.synced_index[i]].offset;
-     avgAngle  += myDraw[second.synced_index[i]].angle;
+  for(let i =0 ;i<all.length;i++ ){
+     avgWeight += myDraw[all[i]].weight;
+     avgOffset += myDraw[all[i]].offset;
+     avgAngle  += myDraw[all[i]].angle;
+     avgColorR += myDraw[all[i]].color[0]*myDraw[all[i]].color[0];
+     avgColorG += myDraw[all[i]].color[1]*myDraw[all[i]].color[1];
+     avgColorB += myDraw[all[i]].color[2]*myDraw[all[i]].color[2];
 
   }
   let random_color = getRandomColor();
-  for(let i =0 ;i<second.synced_index.length;i++ ){
-    myDraw[second.synced_index[i]].weight=avgWeight/second.synced_index.length;
-    myDraw[second.synced_index[i]].offset=avgOffset/second.synced_index.length;
-    myDraw[second.synced_index[i]].angle=avgAngle/second.synced_index.length;
-    myDraw[second.synced_index[i]].color= random_color;
-
+  for(let i =0 ;i<all.length;i++ ){
+    myDraw[all[i]].weight=avgWeight/all.length;
+    myDraw[all[i]].offset=avgOffset/all.length;
+    myDraw[all[i]].angle=avgAngle/all.length;
+    myDraw[all[i]].color[0]= Math.round(sqrt(avgColorR/all.length));
+    myDraw[all[i]].color[1]= Math.round(sqrt(avgColorG/all.length));
+    myDraw[all[i]].color[2]= Math.round(sqrt(avgColorB/all.length));
  }
 }
  
 
-//}
+}
 
 function ComparableMonsters (index){
   var arr   = [];
@@ -381,3 +398,17 @@ function getRandomColor() {
     return color;
   }
   
+
+  function CompareArray(first=[],second=[]){
+    let x = first.every(elem => second.includes(elem));
+    return x ;
+  }
+
+  function random_rgba() {
+    var o = Math.round, r = Math.random, s = 255;
+    var x = o(r()*s) ;
+    var g = o(r()*s) ;
+    var b = o(r()*s) ;
+    var a = r().toFixed(1);
+    return [x,g,b,a];
+}
