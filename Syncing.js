@@ -7,7 +7,7 @@ let stop = true;
 let y = 0 ;
 var sW = [];
 var sC = [];
-let size= 100  ;
+let size= 110  ;
 let factor = 2;
 let margin = size /factor ;
 let posX,posY;
@@ -35,7 +35,7 @@ function setup() {
   for (let y= 0 ; y<noi_height;y++) {
     for ( let x = 0 ; x <noi_width; x ++) {
       var bool = Math.random() < 0.5;
-      offset = random(-0.10,0.10);  
+      offset = random(-0.20,0.20);  
       //scale(sC[x*noi+y]);
      
      //
@@ -47,7 +47,7 @@ function setup() {
      var trans_y = posY+(margin+size)*y;
    
       push();
-      myDraw[index] = new MimiDraw(index,x,y,size,random(0,360),random(0.1,3.9),random_rgba(),bool,trans_x,trans_y,offset,offset,sync,[index]);
+      myDraw[index] = new MimiDraw(index,x,y,size,random(0,360),random(1.1,3.9),random_rgba(),bool,trans_x,trans_y,offset,offset,sync,[index]);
       translate(trans_x,trans_y);
       myDraw[index].display();
       pop();
@@ -60,15 +60,16 @@ function setup() {
 }
 
 function draw() {
-  background('#2B3A55');
+  background('black');
   for(let x = 0 ;x<index;x++) {
  
   push();
   translate(myDraw[x].trans_x,myDraw[x].trans_y);  
+  myDraw[x].compare();
   myDraw[x].rotate();
   //scale(scale_x);
   myDraw[x].display();
-  myDraw[x].compare();
+  
   pop();
 
     scale_x=scale_x - 0.0001;
@@ -108,6 +109,7 @@ class MimiDraw {
    
     let clr = 'rgb(' + this.color[0] + ',' + this.color[1] + ',' + this.color[2]  + ')';
     strokeWeight(this.weight);
+    strokeCap(ROUND);
     stroke (color(clr));
     rotate(radians(this.rotation));
 
