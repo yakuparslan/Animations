@@ -7,8 +7,8 @@ let stop = true;
 let y = 0 ;
 var sW = [];
 var sC = [];
-let size= 166  ;
-let factor = 2;
+let size= 88  ;
+let factor = 90;
 let margin = size /factor ;
 let posX,posY;
 let noi;
@@ -18,10 +18,16 @@ let disappear = false;
 var index = 0 ;
 let offset;
 let sync = false;
+let fps = 18;
+
+let firstDraw=0;
+var capturer = new CCapture({ format: 'gif', workersPath: 'libraries/',framerate:fps });
+
+
 function setup() {
   rectMode(CENTER);
   createCanvas(width, height);
-  background('#2B3A55');
+  background('#FFAD60');
 
   noi_width = floor((width*factor-size)/(size*factor+size));
   noi_height = floor((height*factor-size)/(size*factor+size));
@@ -35,12 +41,18 @@ function setup() {
   for (let y= 0 ; y<noi_height;y++) {
     for ( let x = 0 ; x <noi_width; x ++) {
     var bool = Math.random() < 0.5;
-    offset = random(-0.05,0.05);  
+    offset = random(-0.07,0.07);  
     var trans_x = posX+(margin+size)*x;
     var trans_y = posY+(margin+size)*y;
-  
+    var col = '';
+    if(bool===true){
+      col = '#24A19C';
+    }
+    else {
+      col = '#D9534F';
+    }
     push();
-    myDraw[index] = new MimiDraw(index,x,y,size,random(0,360),random(2.1,5.9),random_rgba(),trans_x,trans_y,offset,offset,sync,[index]);
+    myDraw[index] = new MimiDraw(index,x,y,size,random(0.99,1.01),random(1.1,3.9),col,trans_x,trans_y,offset,offset,sync,[index]);
     translate(trans_x,trans_y);
     myDraw[index].display();
     pop();
@@ -52,9 +64,27 @@ function setup() {
 }
 
 function draw() {
-  background('black');
+
+   
+  if (firstDraw === 60) {
+    // start the recording on the first frame
+    // this avoids the code freeze which occurs if capturer.start is called
+    // in the setup, since v0.9 of p5.js
+    capturer.start();
+  }
+
+  // if we have passed t=1 then end the animation.
+  if (firstDraw === 420) {
+    console.log('finished recording.');
+    capturer.stop();
+    capturer.save();
+    return;
+  }
+
+
+ background('#FFE162');
   for(let x = 0 ;x<index;x++) {
-  myDraw[x].compare();
+  //myDraw[x].compare();
   myDraw[x].rotate();
   }
    
@@ -65,6 +95,10 @@ function draw() {
     myDraw[x].display();
     pop();
   }
+
+ firstDraw +=1;
+ console.log('capturing frame');
+ capturer.capture(document.getElementById('defaultCanvas0'));
 }
 
 
@@ -89,11 +123,11 @@ class MimiDraw {
    
   }
   display(){
-    drawSquareMimi(myDraw[this.index]);
+    drawSquare(myDraw[this.index],1);
   }
 
     rotate(){
-      this.rotation = map(sin(this.angle), -1, 1, 0, 360);
+      this.rotation = map(sin(this.angle), -1, 1, 0.5, 1.000);
       this.angle +=this.offset;
     }
 
@@ -340,4 +374,23 @@ function getRandomColor() {
     var b = o(r()*s) ;
     var a = r().toFixed(1);
     return [x,g,b,a];
+}
+
+
+function drawSquare(current,iteration){
+  rectMode(CENTER);
+  var x = 0;
+  var y = 0;
+  let it = iteration ;
+  let freq = current.rotation; 
+  if (it<10) {
+  strokeWeight(current.weight);
+  stroke(color(current.color));
+  noFill();
+  
+  square(x,y,current.size *Math.pow(freq,it));
+  it++;
+  drawSquare(current,it);
+}
+  
 }
