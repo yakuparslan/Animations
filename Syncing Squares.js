@@ -1,4 +1,4 @@
-let width = 1080;
+let width = 2080;
 let height = 1920;
 let rotation_margin_fast = 1.9;
 let rotation_margin_slow = rotation_margin_fast * 0.8;
@@ -64,7 +64,7 @@ function setup() {
 }
 
 function draw() {
-
+/*
    
   if (firstDraw === 60) {
     // start the recording on the first frame
@@ -80,7 +80,7 @@ function draw() {
     capturer.save();
     return;
   }
-
+*/
 
  background('#FFE162');
   for(let x = 0 ;x<index;x++) {
@@ -97,8 +97,8 @@ function draw() {
   }
 
  firstDraw +=1;
- console.log('capturing frame');
- capturer.capture(document.getElementById('defaultCanvas0'));
+// console.log('capturing frame');
+// capturer.capture(document.getElementById('defaultCanvas0'));
 }
 
 
