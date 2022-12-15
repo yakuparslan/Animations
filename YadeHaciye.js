@@ -46,30 +46,17 @@ function draw() {
   let centery = height/2;
   
   angle = offset ;
-  lfo = map(sin(angle), -strum, strum, 150, 250)/100;
+  lfo = map(sin(angle), -strum, strum, 0, 360);
   let y = 1920;
   
-  for(let x = 0 ; x <5;x++){
-  push();
-  translate(540,y); 
-  rotate(lfo*arrayRandom[x]);
-  drawMiddle();
-  pop();
-  y = y-480;  
-  
-  }
+ 
 
     push();
-    translate(0,centery); 
-    rotate(lfo*arrayRandom[0]);
+    translate(centerx,centery); 
+    rotate(radians(lfo));
     drawMiddle();
     pop();
     
-    push();
-    translate(1080,centery); 
-    rotate(lfo*arrayRandom[4]);
-    drawMiddle();
-    pop();
    
   /*
     for (let x = 0; x<5;x++){
@@ -87,7 +74,7 @@ function draw() {
     }
 */
   
-  offset += 0.03;
+  offset += 0.005;
   firstDraw +=1;
   }
  
@@ -103,7 +90,7 @@ function drawMiddle(){
   fill(white);
   translate(0,-200);
   rotate(radians(45));
-  drawTest(0,0,5);
+  drawTest(0,0,6);
   pop();
 
   push();
@@ -131,8 +118,7 @@ function drawMiddle(){
 
   
   
-  fill(white);
-  drawSquare(0,282.84,45);
+  
   
   fill(red);
   drawSquare(0,250,45);
