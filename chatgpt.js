@@ -3,7 +3,7 @@ let offset=0;
 let angle;
 let lfo;
 let lfo_previous;
-let it = 500 ; 
+let it = 50 ; 
 let division = it;
 let stop = true;
 let frame_num =0;
@@ -14,6 +14,7 @@ var capturer = new CCapture({ format: 'gif', workersPath: 'libraries/',framerate
 function setup() {
     createCanvas(1080, 1220);
     frameRate(50);
+  //  background('#393E46')
   
 }
 
@@ -22,37 +23,37 @@ function setup() {
     
     
   
-
+/*
     if (frame_num==0) {
       console.log('started');
       capturer.start();
     }
 
-     
-
-
-
-    background('#2D4059');
-    lfo = map(sin(offset), -1, 1, 0, 90);
-    
     if (stop==false) {
       console.log('finished recording.');
       capturer.stop();
       capturer.save();
       return;
     }
+*/
 
 
 
+
+
+    //background('#2D4059');
+    lfo = map(sin(offset), -1, 1, 0, 360);
+    
+  
     lfo_previous = lfo;
    // console.log(lfo);
     scale_lfo = map(sin(offset), -1, 1, 1, 5);
     // Translate to the middle of the canvas
     translate(width / 2, height / 2);
-    //scale(scale_lfo);
+    scale(1);
     drawObject();
-    offset += 0.001  ;
-    capturer.capture(document.getElementById('defaultCanvas0'));
+    offset += 0.01  ;
+  //  capturer.capture(document.getElementById('defaultCanvas0'));
     frame_num +=1;
   }
   
@@ -65,50 +66,17 @@ function setup() {
     rotate(radians(lfo));
     // Draw the square
     rectMode(CENTER); 
-    strokeWeight(3); 
-    if(it>490){
-      let a = map(it,490,division,0.20,0);
-      let colorF = 'rgba(252,248,232,'+a+')';
-      fill(colorF); 
-    }
-    else if (it>480&&it<=490){
-     
-      let a = map(it,480,490,0.40,0.20);
-      let colorF = 'rgba(236,179,144,'+a+')';
-      fill(colorF); 
-    }
-    else if (it>470&&it<=480){
-      fill('#FCBAD3'); 
-      let a = map(it,470,480,0.60,0.40);
-      let colorF = 'rgba(223,120,97,'+a+')';
-      fill(colorF); 
-    }
-    else if (it>460&&it<=470){
-      let a = map(it,460,470,0.80,0.60);
-      let colorF = 'rgba(148,180,159,'+a+')';
-      fill(colorF);
-    }
-    else if (it>445&&it<=460){
-      fill('#355764'); 
-      let a = map(it,445,460,0.90,0.80);
-      let colorF = 'rgba(53,87,100,'+a+')';
-      fill(colorF);
-    }
-    else {
-      fill('#2D4059');
-      let a = map(it,0,460,1,0);
-      let colorF = 'rgba(45,64,89,'+a+')';
-      fill(colorF);
-    }
-       
-    stroke('#2D4059');
+    strokeWeight(0.1); 
+   
+     noFill();  
+    stroke('#00ADB5');
   //  rect(0, 0, 300, 500);
-    polygon(0,0,360,4)
+    polygon(0,0,360,2)
     it=it-1;
     drawObject();
     }
     else {
-        it = 500;
+        it = 50;
        
     }
   }

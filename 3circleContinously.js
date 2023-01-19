@@ -129,9 +129,9 @@ function drawMiddle(circle_num){
 function drawCircle(x,y,size,circle_num){
   push();
   fill(colors[circle_num]);
-  drawingContext.shadowOffsetX = 1;
-  drawingContext.shadowOffsetY = -1;
-  drawingContext.shadowBlur = 2;
+    drawingContext.shadowOffsetX = 1;
+    drawingContext.shadowOffsetY = -1;
+    drawingContext.shadowBlur = 2;
   drawingContext.shadowColor = colors[circle_num];
   translate(7*centerx/8,centery-centery/8); 
   rotate(trans*1);
