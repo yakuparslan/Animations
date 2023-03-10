@@ -1,6 +1,7 @@
 let jumper;
 let myDraw=[];
 let backgroundColor = 'rgba(247,247,247,0.5)';
+let backloop = 'rgba(247,247,247,0.1)';
 let frequency = 1024;
 let sc = 1;
 let wide_obj = 200;
@@ -25,7 +26,7 @@ function setup() {
 
 function draw() {
     
-    background(backgroundColor);
+    background(backloop);
     let wide_x = wide_obj * cos(PI/12);
     let wide_y = wide_obj * sin(PI/12);
     if(stop===true) {
@@ -37,15 +38,17 @@ function draw() {
     frameX = random(0.01,0.05);
     offsetX=1;
     console.log(frameX+' '+offsetX);
-
+    
    
 }   
     let a = '0.9';
-    let b = '0.5';
+    let b = '0.1  ';
     lfo = map(cos(offset * Math.PI / 180), 1, -1, 0, 90)+cont ;
-    wide_obj = map(cos(frameC), 1, -1, 75, 300) ;
-    size = map(cos(frameC), 1, -1, 200, 100) ;
+    wide_obj = map(cos(frameC), 1, -1, 0, 500) ;
+    size = map(cos(frameC), 1, -1, 50, 100) ;
+    let back = map(cos(frameC), 1, -1, 0.01, 0.02) ;
     trans =radians(lfo);
+    backloop = 'rgba(247,247,247,'+back+')';   
 //    console.log(wide_obj);
     push();
     beginShape();
