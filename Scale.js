@@ -41,6 +41,7 @@ function draw() {
    
 }   
     let a = '0.9';
+    let b = '0.5';
     lfo = map(cos(offset * Math.PI / 180), 1, -1, 0, 90)+cont ;
     wide_obj = map(cos(frameC), 1, -1, 75, 300) ;
     size = map(cos(frameC), 1, -1, 200, 100) ;
@@ -52,19 +53,20 @@ function draw() {
     translate(width/2,height/2);
     ;
     stroke('rgba(235, 83, 83,'+a+')');
+    rotate(45);
     rotate(trans);
-    fill('rgba(235, 83, 83,'+a+')');
+    fill('rgba(235, 83, 83,'+b+')');
     ellipse(0,-1*wide_obj,size,size);    
    // rotate(trans);
     stroke('rgba(249, 217, 35,'+a+')');
-    fill('rgba(249, 217, 35,'+a+')');
+    fill('rgba(249, 217, 35,'+b+')');
     ellipse(-wide_obj,0,size,size);
    // rotate(trans);
     stroke('rgba(54,174 ,124,'+a+')');
-    fill('rgba(54,174 ,124,'+a+')');
+    fill('rgba(54,174 ,124,'+b+')');
     ellipse(wide_obj,0,size,size);
     stroke('rgba(24,116,152,'+a+')');
-    fill('rgba(24,116,152,'+a+')');
+    fill('rgba(24,116,152,'+b+')');
     ellipse(0,wide_obj,size,size);
 
     /*
