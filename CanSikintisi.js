@@ -8,9 +8,13 @@ let randomStrokeWeight=1;
 let gradientArray;
 let hex_color='#6D9886';
 let scale = 1;
-let drawArray=[];
+
+let rows = 10;
+let columns = 1024;
+let array = Array(rows).fill().map(() => Array(columns).fill(0));
+let drawArray=Array(rows).fill().map(() => Array(columns).fill(0));
 let index = 0;
-let backgroundColor = '#393E46';
+let backgroundColor = '#2D4059';
 // the canvas capturer instance
 var capturer = new CCapture({ format: 'gif', workersPath: 'libraries/',framerate:30 });
 
@@ -19,6 +23,7 @@ function preload(){
   }
   
   function setup(){
+   
     for(let i =0;i<1024;i++) {
             random_array.push(i);
     }
@@ -30,50 +35,47 @@ function preload(){
     fft = new p5.FFT(0.9,1024);
     angleMode(DEGREES);
     sound.amp(1);
+    sound.play();
    // sound.loop()
    gradientArray = new Gradient().setColorGradient("#FFFFFF", "#000000").getColors();
  //  console.log(gradientArray);
   }
   
   function draw(){
-    if(framee==0){
-     // capturer.start();
-    }
-     // Initialize sound 
+    background(backgroundColor);
     sound.onended(test);
     spectrum = fft.analyze();
-    spectrum = spectrum.map(x => x*1.5); 
-    if(framee%300==0){
-      scale = scale-0.01; 
-      randomStrokeWeight = random(0.5,2);
-      let colorR = Math.ceil(random(9));
-  //    hex_color = incrementColor(hex_color,1000);
+      if(Math.max(...spectrum)!=0){
+      drawArray.pop();
+      drawArray.unshift(spectrum);
+      console.log(drawArray); 
+      //for(let i=0;i<drawArray.length;i++){
+       drawArray[0] = drawArray[0].map(x => x*(0.4)+200);  
+       drawArray[5] = drawArray[5].map(x => x*(0.4)+100); 
+       drawArray[2] = drawArray[2].map(x => x*(0.4)+300); 
+       // drawing(drawArray[2],'rgba(252,248,232,0.60)');
+       // drawing(drawArray[1],'rgba(236,179,144,0.40)');
+       let fillColor = 'rgba(236,179,144,0.10)';
+       drawing(drawArray[0],fillColor); 
+      // drawing(drawArray[5],fillColor);
+        
+        
+     // }
+       
       
-      console.log(hex_color);
-     // hex_color = gradientArray[colorR];
-     // sound.amp(random(0.3,1.5));
       
     }
-   // spectrum = spectrum.map(x => x*scale); 
-
-    drawing();
-    
    
-   framee++;
-   console.log('capturing frame');
-  // capturer.capture(document.getElementById('defaultCanvas0'));
+    framee++;
+  
   }
-  function drawing(){
-  
-    drawArray[index]=spectrum;
-    //console.log(drawArray);
-   
-    let input = spectrum;
-  
+
+  function drawing(input,circleColor){
+
     push();
     
     translate(width/2,height/2);
-    fill(backgroundColor);
+    //fill(circleColor);
     strokeWeight(randomStrokeWeight);
     stroke(hex_color);
     beginShape();
@@ -94,7 +96,7 @@ function preload(){
         firstX=x;
         firstY=y;
        }
-       //console.log(framee+' '+x+' '+y+" "+firstX+' '+firstY);
+    
        vertex(x,y);
       // vertex_array.push([x,y]);
        drawCount++;
@@ -107,12 +109,11 @@ function preload(){
     }
     vertex(firstX,firstY);
     vertex_array.push([firstX,firstY]);
-   // console.log(vertex_array);
     endShape();
 
     pop();
   
-
+    index++;
   
   }
 

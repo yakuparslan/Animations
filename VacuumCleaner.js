@@ -32,8 +32,9 @@ function draw() {
     carpet.create();
   }
   carpet.display(); 
-  //vac.display();
-  vac.clean();
+  vac.display();
+  vac.move();
+  //vac.clean();
   
   //print(rotate_vacuum+" "+ speed_angle+ " " + speedx +" "+ speedy);
   
