@@ -4,6 +4,7 @@ let earth,moon,sun;
 let angle = 0;
 let x;
 let lfo=0;
+let numbObjects=50;
 
 let img;
 function preload() {
@@ -19,9 +20,9 @@ function setup(){
    // moon  = new SpaceObjects(400,0,0,20,random(colors),false);
    // sun = new SpaceObjects(0,0,0,100,random(colors),true);
    console.log(hex2rgb(random(colors),0.1));
-   for(let x=0;x<50;x++){
+   for(let x=0;x<numbObjects;x++){
     let col = random(colors);
-    objs.push( new DrawObjects(x,0,0,0,hex2rgb(col,0.001*(50-x)),hex2rgb(col,1),3*x,0));
+    objs.push( new DrawObjects(x,0,0,0,hex2rgb(col,0.001*(numbObjects-x)),hex2rgb(col,1),3*x,0));
 }
 }
 function draw(){
@@ -29,6 +30,7 @@ background('#FFDE7D');
 
 for ( let i of objs){
     i.drawThem();
+    i.update(); 
    
 }
 angle +=0.01;
@@ -63,6 +65,8 @@ class DrawObjects{
         }
         
         update(){
+          let new_size  = map(cos(angle), 1, -1, this.size, objs[(this.i+1)%numbObjects].size);
+          this.size=new_size;
            // this.boxcolor=objs[(this.i+1)%20].boxcolor;
            // this.strokeColor=objs[(this.i+1)%20].strokeColor;
         }
