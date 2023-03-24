@@ -22,7 +22,7 @@ function setup(){
    console.log(hex2rgb(random(colors),0.1));
    for(let x=0;x<numbObjects;x++){
     let col = random(colors);
-    objs.push( new DrawObjects(x,0,0,0,hex2rgb(col,0.001*(numbObjects-x)),hex2rgb(col,1),3*x,0));
+    objs.push( new DrawObjects(x,0,0,0,hex2rgb(col,0.001),hex2rgb(col,1),3*x,0));
 }
 }
 function draw(){
@@ -33,7 +33,7 @@ for ( let i of objs){
     i.update(); 
    
 }
-angle +=0.01;
+angle +=0.001;
 }
 
 class DrawObjects{
@@ -56,9 +56,9 @@ class DrawObjects{
             push();
             fill(this.boxcolor);
             stroke(this.strokeColor);
-            rotateY(x*lfo);
-            rotateX(x*lfo*0.2);
-            rotateZ(x*lfo*0.4);
+           rotateY(100);
+           // rotateX(x*lfo*0.2);
+           // rotateZ(x*lfo*0.4);
             box(this.size);
             pop();
 
