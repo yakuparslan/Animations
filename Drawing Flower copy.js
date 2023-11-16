@@ -64,7 +64,7 @@ function draw() {
         stroke('rgba(152, 223, 214,1)');
         circle(x,y,size);
         
-        fill('rgba(63, 73, 127,0.1)');
+        fill(' ');
         stroke('rgba(63, 73, 127,   1)');
         circle( width-x,height-y,size);
         

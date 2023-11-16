@@ -1,5 +1,5 @@
 let objs = [];
-let colors = ['#FFFBF5']//,'#FFBF9B','#B46060','#EA5455']; //,'#E96479','#7DB9B6','#F5E9CF'];
+let colors = ['#EEEEEE']//,'#FFBF9B','#B46060','#EA5455']; //,'#E96479','#7DB9B6','#F5E9CF'];
 let earth,moon,sun;
 let angle = 0;
 let x;
@@ -45,8 +45,8 @@ function setup(){
 }
 }
 function draw(){
-background('#1B2430');
-//image(noiseFilter, -width/2, -height/2);
+background('#000000');
+image(noiseFilter, -width/2, -height/2);
 for ( let i of objs){
     push();
    // rotateY(angle);
@@ -71,7 +71,7 @@ class DrawObjects{
             this.boxcolor=boxcolor;
             this.strokeColor=strokeColor;
             this.size=size;
-            this.rotate=i/300;
+            this.rotate=i/150;
             this.strokeWeight=strokeWeight;
             this.updatedsize=size;
 
@@ -100,12 +100,13 @@ class DrawObjects{
             this.z=movez;
         }
         rotateObj(){
-            let lfoX = map(cos(angle+this.rotate+0.01), 1, -1, 0, TWO_PI);
-            let lfoY = map(cos(angle+this.rotate+0.02), 1, -1, 0, TWO_PI);
-            let lfoZ = map(cos(angle+this.rotate+0.03), 1, -1, 0, TWO_PI);
-            rotateY(lfoX);
-            rotateX(lfoY);
+            let lfoX = map(cos(angle+this.rotate), 1, -1, 0, TWO_PI);
+            let lfoY = map(cos(angle+this.rotate), 1, -1, 0, TWO_PI);
+            let lfoZ = map(cos(angle+this.rotate), 1, -1, 0, TWO_PI);
+            
             rotateZ(lfoZ);
+            rotateX(lfoY);
+            rotateY(lfoX);
             
         }
 
