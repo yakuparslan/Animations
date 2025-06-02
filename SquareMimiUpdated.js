@@ -7,7 +7,7 @@ let stop = true;
 let y = 0 ;
 var sW = [];
 var sC = [];
-let size= 50  ;
+let size=  63   ;
 let factor = 2;
 let margin = size /factor ;
 let posX,posY;
@@ -21,33 +21,19 @@ let sync = false;
 function setup() {
   rectMode(CENTER);
   createCanvas(width, height);
-  background('#2B3A55');
-
+  background('#2C3639');
   noi_width = floor((width*factor-size)/(size*factor+size));
   noi_height = floor((height*factor-size)/(size*factor+size));
- 
   posX = margin+size/2;
   posY = margin + size/2;
-
- 
- 
-
   for (let y= 0 ; y<noi_height;y++) {
     for ( let x = 0 ; x <noi_width; x ++) {
-      var bool = Math.random() < 0.5;
-      offset = random(-0.10,0.10);  
-      //scale(sC[x*noi+y]);
-     
-     //
-     // rotate(radians(random(-5,5)));
-     // strokeWeight(sW[x*noi+y]);
-     // stroke ('#FFC286');
-     // drawSquareMimi(0,0,size);
-     var trans_x = posX+(margin+size)*x;
-     var trans_y = posY+(margin+size)*y;
-   
+      var bool = Math.random() < 0.5;  
+      var trans_x = posX+(margin+size)*x;
+      var trans_y = posY+(margin+size)*y;
+      offset = random(-0.05,0.05);
       push();
-      myDraw[index] = new MimiDraw(index,x,y,size,random(0,360),random(0.1,3.9),'#FFC286',bool,trans_x,trans_y,offset,offset,sync,[index]);
+      myDraw[index] = new MimiDraw(index,x,y,size,offset,random(1,2),'#DCD7C9',bool,trans_x,trans_y,offset,offset,sync,[index]);
       translate(trans_x,trans_y);
       myDraw[index].display();
       pop();
@@ -60,18 +46,16 @@ function setup() {
 }
 
 function draw() {
-  background('#2B3A55');
+  background('#2C3639');
   for(let x = 0 ;x<index;x++) {
  
   push();
   translate(myDraw[x].trans_x,myDraw[x].trans_y);  
   myDraw[x].rotate();
-  //scale(scale_x);
   myDraw[x].display();
-  myDraw[x].compare();
+  //  myDraw[x].compare();
   pop();
 
-    scale_x=scale_x - 0.0001;
   }
    
 
@@ -121,10 +105,10 @@ class MimiDraw {
     let current_y  = y+currentSize;
     let status = 0 ;
  
-    let multiplier = 7  ;
+    let multiplier = 9  ;
     currentSize = currentSize * (multiplier/10);
    
-    for (let a = 0 ; a <10   ; a ++) {
+    for (let a = 0 ; a <15   ; a ++) {
       if(a%2===0) {
       line(current_x,current_y,current_x,current_y-currentSize);
       line(current_x,current_y-currentSize,current_x+currentSize,current_y-currentSize);
@@ -239,7 +223,6 @@ function MonstersMatched(first,second){
 }
  
 
-//}
 
 function ComparableMonsters (index){
   var arr   = [];
@@ -373,11 +356,21 @@ function drawSquareMimi(x,y,size){
 
 
 function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
+    // Generate a random grayscale value between 0 and 255
+    var value = Math.floor(Math.random() * 256);
+  
+    // Convert the grayscale value to a hex string
+    var hexValue = value.toString(16).padStart(2, '0');
+    
+    // Create a color string in the format "#RRGGBB"
+    var color = '#' + hexValue + hexValue + hexValue;
+    
     return color;
+    // var letters = '0123456789ABCDEF';
+    // var color = '#';
+    // for (var i = 0; i < 6; i++) {
+    //   color += letters[Math.floor(Math.random() * 16)];
+    // }
+    // return color;
   }
   

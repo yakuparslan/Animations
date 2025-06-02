@@ -13,25 +13,21 @@ function setup() {
     hex = new Hexagon(0,0,'#D3504A'); 
     hex.create(); 
 
-    // hexagons.push(hex);
-    //   for (let i = 0 ; i<2;i++){
-    //   for(let x=0;x<direction.length;x++){
-    //       let neighbor = p5.Vector.add(direction[x],hexagons[i].posNo);
-          
-    //       hex = new Hexagon(neighbor.x,neighbor.y);
-    //       hexagons.push(hex);
-    //       hex.create();
-    //     }
-    //   }
+    hexagons.push(hex);
+    for (let i = 0 ; i<1;i++){
+      for(let x=0;x<direction.length;x++){
+          let neighbor = p5.Vector.add(direction[x],hexagons[i].posNo);
+          hex = new Hexagon(neighbor.x,neighbor.y,'#D3504A');
+          hexagons.push(hex);
+          hex.create();
+        }
+      }
   
   }
 
 
   function draw() {
-    translate(width/2,height/2);  
-    hex2 = new Hexagon(int(random(-10,10)),int(random(-10,10)),'#D3504A');   
-    hex2.create();
-    reflectQ(hex2);
+   
   
     
   }
